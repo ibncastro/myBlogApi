@@ -1,0 +1,19 @@
+{
+  "name": "myblogapi",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/ibncastro/myBlogApi.git",
+  "author": "ibncastro <ibncastro20@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.6.2",
+    "normalize-port": "^1.0.0",
+    "swagger-jsdoc": "6",
+    "swagger-ui-express": "^4.5.0"
+  },
+  "private": true
+}
