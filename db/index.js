@@ -1,15 +1,20 @@
-// mongoose connection to database?
-var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URL);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback() {
-    console.log("h");
-});
+const mongoose = require('mongoose');
 
-exports.test = function (req, res) {
-    res.render('test');
-};
+// mongoose connection to database
+// const conn = await mongoose.createConnection(process.env.MONGO_URL).
+//   asPromise();
+
+//   conn.on("error", () => {
+//     throw new Error(`Unable to connect to database: ${MONGO_URL}`)
+//   })
+//   conn.on("connected", () => {
+//     console.log('Connection to database successful')
+//   })
+
+// module.exports = conn;
 
 
-module.exports = db;
+// Connection URL
+const conn = mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
+
+module.exports = conn;
