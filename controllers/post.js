@@ -3,7 +3,6 @@ const Post = require("../models/Posts")
 
 const create = async (req, res) => {
     try {
-        console.log("creating something")
         const post = new Post(req.body)
         await post.save();
         return res.status(200).json({ message: "Post has been added successfully" })
@@ -27,18 +26,18 @@ const list = async (req, res) => {
 const PostByID = async (req, res, next, id) => {
     try {
         const post = await Post.findById(id)
+        req.singlePost = post;
         if (!post) {
             res.status(400).json({ error: "Could not find Post" })
+            
         }
-        req.singlePost = post;
         next()
     } catch (err) {
-        res.json({ error: "Could not retireve posts" })
+        res.json({ error: "Could not retireve post" })
     }
 }
 
 const read = (req, res) => {
-    console.log("hitting this read")
     res.json(req.singlePost)
 }
 

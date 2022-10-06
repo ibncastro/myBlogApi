@@ -1,5 +1,6 @@
 const express = require("express")
 require("dotenv").config()
+const path = require("path")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const helmet = require("helmet")
@@ -16,7 +17,7 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true}))
-// app.use(cookieParser)
+app.use(cookieParser())
 // app.use(helmet)
 // app.use(cors)
 
