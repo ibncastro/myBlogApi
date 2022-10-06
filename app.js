@@ -5,7 +5,10 @@ const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const helmet = require("helmet")
 const cors = require('cors')
+
+// Importing databases
 require("./db/mongoDB")
+require("./db/sqlConnect")
 
 const postRoutes = require('./routes/post')
 
