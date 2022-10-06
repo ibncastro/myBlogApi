@@ -4,11 +4,14 @@ const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const helmet = require("helmet")
 const cors = require('cors')
-require("./db/index")
+require("./db/mongoDB")
 
 const postRoutes = require('./routes/post')
 
 const app = express()
+
+// serve static folder public express?
+  app.use(express.static(path.join(__dirname, "public")));
 
 
 app.use(bodyParser.json())
