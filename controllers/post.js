@@ -11,8 +11,6 @@ const create = async (req, res) => {
     }
 }
 
-
-
 const list = async (req, res) => {
     try {
         const posts = await Post.find()
@@ -21,7 +19,6 @@ const list = async (req, res) => {
         res.status(400).json({ error: "Could not fetch posts" })
     }
 }
-
 
 const PostByID = async (req, res, next, id) => {
     try {

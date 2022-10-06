@@ -1,9 +1,12 @@
 const Sequelize = require("sequelize")
 
-const sequelize = new Sequelize("blogApiDB", "root", "", {
-    host: "92.168.64.2",
+const sequelize = new Sequelize("mysql", "root", "", {
+    host: "localhost",
     dialect: "mysql",
-    port: 3306,
+    // port: 3306,
+    dialectOptions: {
+        connectTimeout:100000
+    },
 
     pool: {
         max: 5,
