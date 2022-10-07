@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const { Schema } = mongoose;
 
-const userSchema = new mongoo.Schema({
+const user = new Schema({
     fullName: {
         type: String,
         required: true,
@@ -58,7 +60,19 @@ const userSchema = new mongoo.Schema({
     }
 
 
-}, { collection: "user" })
+});
 
-module.exports = mongoose.model("User", userSchema )
+const User = mongoose.model("User", user)
+// console.log(typeof User)
+module.exports = User;
 
+
+module.exports.encryptPassword = function (password) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt)
+    return hash
+}
+
+module.exports.validatePassword = function (password, hash) {
+    return bcrypt.compareSync(password, hash)
+}
