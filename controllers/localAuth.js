@@ -22,6 +22,7 @@ const loginPassword = function (req, res, next) {
             if (err) {
                 return res.status(400).json({ errors: err });
             }
+            console.log(req.session)
             return res.status(200).json({ success: `logged in ${user.id}` });
         });
     })(req, res, next);

@@ -14,14 +14,9 @@ require("./db/mongoDB")
 const postRoutes = require('./routes/post')
 const localAuth = require('./routes/localAuth')
 
-// create redis store
-const RedisStore = connectRedis(session)
 
 // configure redis client 
-  const redisClient = redis.createClient({
-    host: "localhost",
-    port: 6379
-  })
+  const redisClient = redis.createClient({ legacyMode: true })
 
   redisClient.connect()
   .then(() => {
@@ -30,6 +25,9 @@ const RedisStore = connectRedis(session)
   .catch(err => {
     console.log("Redis client connection failed", err)
   })
+
+  // create redis store
+const RedisStore = connectRedis(session)
 
 const app = express()
 
@@ -43,13 +41,20 @@ app.use(cookieParser())
 // app.use(cors)
 
 app.use(session({
-  // store: new RedisStore({ client: redisClient }),
+  store: new RedisStore({ client: redisClient }),
   secret: "this is a secret oo",
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    httpOnly: false,
+    maxAge: 1000 * 60 * 10
+  }
 }))
 
-app.use(passport.authenticate('session'))
+
+
+// app.use(passport.authenticate('session'))
 // app.use(function(req, res, next) {
 //   var msgs = req.session.messages || [];
 //   res.locals.messages = msgs;
