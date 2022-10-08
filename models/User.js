@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const { Schema } = mongoose;
 
+const { validateEmail, isLength } = require("../helpers/validator")
+
 const user = new Schema({
     fullName: {
         type: String,
@@ -12,7 +14,12 @@ const user = new Schema({
     email: {
         type: String,
         unique: true,
-        required: true
+        required: [true, "Email is a required field"],
+        validate(value) {
+            if (!validateEmail(value)) {
+                throw new Error("Email is not a valid email format")
+            }
+        }
     },
 
     email_verified: {
@@ -36,7 +43,19 @@ const user = new Schema({
     },
 
     password: {
-        type: String
+        type: String,
+        required: [true, "Password is a required field"],
+        validate(value) {
+
+            if (!isLength(value, { min: 6, max: 1000 })) {
+                console.log("Length of password shd be between 6 and 1000")
+            }
+
+            if (value.toLowerCase().includes("password")) {
+                throw new Error("Password should not include 'password'")
+            }
+
+        }
     },
 
     password_reset_token: {
@@ -62,17 +81,18 @@ const user = new Schema({
 
 });
 
+
 const User = mongoose.model("User", user)
-// console.log(typeof User)
-module.exports = User;
 
 
-module.exports.encryptPassword = function (password) {
+const encryptPassword = function (password) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt)
     return hash
 }
 
-module.exports.validatePassword = function (password, hash) {
+const validatePassword = function (password, hash) {
     return bcrypt.compareSync(password, hash)
 }
+
+module.exports = { User, encryptPassword, validatePassword }

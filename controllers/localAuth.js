@@ -1,13 +1,9 @@
 const passport = require("passport")
 const LocalStrategy = require("passport-local")
 
-const { encryptPassword } = require("../models/user")
-const User = require("../models/user")
+const { encryptPassword, User } = require("../models/user")
 
-// this route will promt u or take u to login page
-const login = async (req, res, next) => {
-    res.render('login')
-}
+const { isLength } = require("../helpers/validator")
 
 const loginPassword = function (req, res, next) {
     passport.authenticate("local", function (err, user, info) {
@@ -28,16 +24,11 @@ const loginPassword = function (req, res, next) {
     })(req, res, next);
 }
 
-// this will log u in
-// const loginPassword = passport.authenticate('local', {
-//     successReturnToOrRedirect: "/",
-//     failureRedirect: "login",
-//     failureMessage: true
-// })
-// }, function (req, res) {
-//     console.log('login is ongoing')
-//     res.send({ message: "Login is successful" })
-// })
+// this route will promt u or take u to login page
+const login = async (req, res, next) => {
+    res.render('login')
+}
+
 
 const logout = function (req, res, next) {
     req.logout(function (err) {
@@ -54,18 +45,44 @@ const signup = function (req, res, next) {
 // actually sign u up 
 const createSignup = async function (req, res, next) {
 
-    const encryptedPass = encryptPassword(req.body.password)
+    try {
 
-    const profile = {
-        fullName: req.body.fullName,
-        email: req.body.email,
-        password: encryptedPass,
-        image: "No Image yet"
+        const validPass = isLength(req.body.password, { min: 6, max: 1000})
+
+        if(!validPass) {
+            console.log('validation for pass failed')
+            throw new Error("Length of password shd be between 6 and 1000")
+        } 
+
+        const encryptedPass = encryptPassword(req.body.password)
+
+        const profile = {
+            fullName: req.body.fullName,
+            email: req.body.email,
+            password: encryptedPass,
+            image: "No Image yet"
+        }
+        
+        const newProfile = new User(profile)
+        await newProfile.save();
+        res.json({ message: "signup successful" })
+
+    } catch (error) {
+
+        let errors = {}
+        // check if error-name = validationError
+        if (error.name === 'ValidationError') {
+
+            Object.keys(error.errors).forEach((key) => {
+                errors[key] = error.errors[key].message
+                console.log(errors)
+            })
+
+            return res.status(400).send(errors)
+        }
+
+        return res.status(500).send(error.message)
     }
-    // console.log(type User)
-    const newProfile = new User(profile)
-    await newProfile.save();
-    res.json({ message: "signup successful" })
 
 }
 

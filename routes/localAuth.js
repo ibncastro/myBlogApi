@@ -3,9 +3,7 @@ const router = express.Router();
 const LocalStrategy = require("passport-local");
 const passport = require('passport');
 
-const { validatePassword } = require("../models/user")
-
-const User = require("../models/user")
+const { validatePassword, User } = require("../models/user")
 
 const { login, loginPassword, logout, signup, createSignup } = require("../controllers/localAuth")
 
