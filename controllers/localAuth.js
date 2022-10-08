@@ -2,7 +2,6 @@ const passport = require("passport")
 const LocalStrategy = require("passport-local")
 
 const { encryptPassword, User } = require("../models/user")
-
 const { isLength } = require("../helpers/validator")
 
 const loginPassword = function (req, res, next) {
@@ -18,7 +17,7 @@ const loginPassword = function (req, res, next) {
             if (err) {
                 return res.status(400).json({ errors: err });
             }
-            console.log(req.session)
+            // console.log(req.session)
             return res.status(200).json({ success: `logged in ${user.id}` });
         });
     })(req, res, next);
@@ -26,7 +25,8 @@ const loginPassword = function (req, res, next) {
 
 // this route will promt u or take u to login page
 const login = async (req, res, next) => {
-    res.render('login')
+    // res.render('login')
+    res.status(400).send("Login first")
 }
 
 
@@ -50,7 +50,6 @@ const createSignup = async function (req, res, next) {
         const validPass = isLength(req.body.password, { min: 6, max: 1000})
 
         if(!validPass) {
-            console.log('validation for pass failed')
             throw new Error("Length of password shd be between 6 and 1000")
         } 
 
