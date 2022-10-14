@@ -6,7 +6,8 @@
   "author": "ibncastro <ibncastro20@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "jest"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

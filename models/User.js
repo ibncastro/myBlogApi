@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const { Schema } = mongoose;
 
-const { validateEmail, isLength } = require("../helpers/validator")
+const { validateEmail, isLength } = require("../helpers/validators")
 
 const user = new Schema({
     fullName: {
@@ -84,15 +84,4 @@ const user = new Schema({
 
 const User = mongoose.model("User", user)
 
-
-const encryptPassword = function (password) {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt)
-    return hash
-}
-
-const validatePassword = function (password, hash) {
-    return bcrypt.compareSync(password, hash)
-}
-
-module.exports = { User, encryptPassword, validatePassword }
+module.exports = User

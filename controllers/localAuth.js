@@ -1,8 +1,8 @@
 const passport = require("passport")
 const LocalStrategy = require("passport-local")
+const  User  = require("../models/user")
+const { isLength, encryptPassword } = require("../helpers/validators")
 
-const { encryptPassword, User } = require("../models/user")
-const { isLength } = require("../helpers/validator")
 
 const loginPassword = function (req, res, next) {
     passport.authenticate("local", function (err, user, info) {

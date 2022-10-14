@@ -3,9 +3,10 @@ const router = express.Router();
 const LocalStrategy = require("passport-local");
 const passport = require('passport');
 
-const { validatePassword, User } = require("../models/user")
+const User = require("../models/user")
 
 const { login, loginPassword, logout, signup, createSignup } = require("../controllers/localAuth")
+const { validatePassword } = require("../helpers/validators") 
 
 passport.use(new LocalStrategy(async function verify(username, password, cb) {
     User.findOne({
