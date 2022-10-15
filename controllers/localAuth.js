@@ -46,12 +46,8 @@ const signup = function (req, res, next) {
 const createSignup = async function (req, res, next) {
 
     try {
-
         const validPass = isLength(req.body.password, { min: 6, max: 1000})
-
-        if(!validPass) {
-            throw new Error("Length of password shd be between 6 and 1000")
-        } 
+        if(!validPass) throw new Error("Length of password shd be between 6 and 1000")
 
         const encryptedPass = encryptPassword(req.body.password)
 
@@ -71,15 +67,12 @@ const createSignup = async function (req, res, next) {
         let errors = {}
         // check if error-name = validationError
         if (error.name === 'ValidationError') {
-
             Object.keys(error.errors).forEach((key) => {
                 errors[key] = error.errors[key].message
-                console.log(errors)
+                // console.log(errors)
             })
-
             return res.status(400).send(errors)
         }
-
         return res.status(500).send(error.message)
     }
 
